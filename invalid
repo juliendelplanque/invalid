@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Name of the file in which invalid tasks will be stored.
+# This variable can be changed to fit your needs.
+INVALID_TASKS_FILE="invalid.txt"
+
+function usage {
+  echo " Mark a task as invalid and archive it:"
+  echo "   invalid ITEM "
+  echo "     Move the task to invalid tasks file."
+  echo ""
+  exit
+}
+
+
+# Get the action that was required by the user.
+action=$1
+shift
+
+# If the action required is usage, show usage of this add-on and exit.
+[ "$action" = "usage" ] && usage
+
+# Ensure that the invalid tasks file exists.
+if [ ! -f "$TODO_DIR/$INVALID_TASKS_FILE" ]; then
+    echo "Creating empty file: $TODO_DIR/$INVALID_TASKS_FILE"
+    touch "$TODO_DIR/$INVALID_TASKS_FILE"
+fi
+
+# Invoke unmodified move command of todo.sh to invalidate a task.
+$TODO_SH command move "$1" "$INVALID_TASKS_FILE"
